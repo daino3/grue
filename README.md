@@ -68,8 +68,6 @@ you can surmise that a Grue is very nearby.  You will automatically�
 at which point you are transported home.  (There should be some clear indication of which room
 is the teleport room, perhaps it has a glowing dais in the center).
 
-========================
-
 ### Further Implementation Notes:
 
 * We prefer that you use Ruby or a similar dynamic language for the implementation. (e.g.,
