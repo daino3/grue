@@ -1,5 +1,5 @@
 class Player
-  attr_reader :room
+  attr_reader :position, :gem_bag
 
   def initialize(position)
     @position = position

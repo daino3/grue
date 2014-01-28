@@ -4,6 +4,7 @@ require_relative 'jewel'
 require_relative 'room'
 require_relative 'map'
 require_relative 'grue'
+require_relative 'player'
 
 describe Jewel do
   let(:jewel) { Jewel.new }
@@ -58,6 +59,16 @@ describe Grue do
     it 'calculates how much the grue\'s gems are worth' do
       expect(grue.total_grue_worth).to eq(grue.gems.map(&:worth).inject(:+))
     end
+  end
+
+end
+
+describe Player do
+  let(:player) { Player.new("some room") }
+
+  it 'is initialized with a position (key for map) and a gem bag' do
+    expect(player.position).to eq("some room")
+    expect(player.gem_bag.empty?).to be_true
   end
 
 end
