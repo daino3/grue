@@ -2,40 +2,31 @@
 Map:
 --------------
 ### Vermillion Room
-Exit_to: east -> Ochre, south -> Aquamarine
-Enter_by: cobalt (south), Ochre (east)
+rooms: north -> nil, east -> Ochre, south -> Aquamarine, west -> nil
 
 ### Ochre Room
-Exit_to: west -> Vermillion, east -> Chartreuse
-Enter_by: Chartreuse (east), Vermillion (west), Ochre (south)
+rooms: north -> nil, east -> Chartreuse, south -> nil, west -> Vermillion
 
 ### Chartreuse Room
-Exit_to: east -> Ochre, south -> Emerald
-Enter_by: Ochre (west), Lavender (south), Violet (deep south shit - portal?)
+rooms: north -> nil, east -> Ochre, south -> Emerald, west -> nil
 
 ### Lavender Room
-Exit_to: north -> Chartreuse, south -> Burnt Sienna
-Enter_by: Emerald (west), Burnt Sienna (south)
+rooms: north -> Chartreuse, east -> nil, south -> Burnt Sienna, west -> nil
 
 ### Emerald Room
-Exit_to: east -> Lavender, south -> Aquamarin, west -> Cobalt 
-Enter_by: Burnt Sienna (south), Chartreuse (north)
+rooms: north -> nil, east -> Lavender, south -> Aquamarin, west -> Cobalt 
 
 ### Aquamarine Room
-Exit_to: west -> Cobalt, south -> Violet 
-Enter_by: Vermillion (north), Emerald (east)
+rooms: north -> nil, east -> nil, south -> Violet, west -> Cobalt  
 
 ### Cobalt Room
-Exit_to: north -> Vermillion, south -> Burnt Sienna 
-Enter_by: Emerald (north), Aquamarine (east)
+rooms: north -> Vermillion, east -> nil, south -> Burnt Sienna, west -> nil 
 
 ### Violet Room
-Exit_to: south -> Chartreuse, east -> Burnt Sienna 
-Enter_by: Aquamarine (north), Aquamarine (east)
+rooms: north -> nil, east -> Burnt Sienna, south -> Chartreuse, west -> nil  
 
 ### Burnt Sienna Room
-Exit_to: north -> Emerald, east -> Lavender 
-Enter_by: Cobalt (south), Violet (east), lavender (north)
+rooms: north -> Emerald, east -> Lavender, south -> nil, west -> nil 
 
 Directions:
 -------------------

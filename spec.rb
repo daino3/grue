@@ -1,5 +1,7 @@
 require 'rspec'
+require 'pry'
 require_relative 'jewel'
+require_relative 'room'
 
 describe Jewel do
   let(:jewel) { Jewel.new }
@@ -17,6 +19,17 @@ describe Jewel do
       value = jewel.worth
       value.should be_between(0, 20)
     end
+  end
+
+end
+
+describe Room do
+  let(:test_room) { Room.new("Vermillion", {north: nil, east: "Ochre", south: "Aquamarine", west: nil}) }
+
+  it 'initializes with a name, rooms as a hash and empty contents' do
+    expect(test_room.name).to eq("Vermillion")
+    expect(test_room.rooms).to be_an(Hash)
+    expect(test_room.contents.empty?).to be_true
   end
 
 end
