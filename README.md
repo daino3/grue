@@ -26,7 +26,11 @@ rooms: north -> Vermillion, east -> nil, south -> Burnt Sienna, west -> nil
 rooms: north -> nil, east -> Burnt Sienna, south -> Chartreuse, west -> nil  
 
 ### Burnt Sienna Room
-rooms: north -> Emerald, east -> Lavender, south -> nil, west -> nil 
+rooms: north -> Emerald, east -> Lavender, south -> nil, west -> nil
+
+Assumptions:
+-------------------
+Must give a 'circular' map - you must be able to get to any room (node) in the map via the outbound doors. 
 
 Directions:
 -------------------
