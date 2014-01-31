@@ -30,7 +30,7 @@ rooms: north -> Emerald, east -> Lavender, south -> nil, west -> nil
 
 Assumptions:
 -------------------
-Must give a 'circular' map - you must be able to get to any room (node) in the map via the outbound doors. 
+Must give a 'circular' map - you must be able to get to any room (node) in the map via the outbound doors available. Room names must be unique. Room 'weights' are 1.
 
 Directions:
 -------------------

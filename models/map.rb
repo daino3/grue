@@ -1,7 +1,7 @@
 require 'pry'
 
 class Map
-  attr_reader :rooms
+  attr_reader :rooms, :final_dist, :priority_queue 
 
   def initialize(*rooms)
     @rooms = rooms
@@ -34,7 +34,7 @@ class Map
         return @final_dist
       elsif dist_data[:distance] == minimum
         # else take the elements with minimum distance and fill in data for their adjacents
-        adj_rooms = find_room_by_name(room_name).outbound_doors       
+        adj_rooms = find_room_by_name(room_name).outbound_doors
         adj_rooms.each do |adj_room_name|
           current_dist   = @priority_queue[adj_room_name][:distance]
           prev_room_dist = dist_data[:distance]
@@ -65,6 +65,7 @@ class Map
       end
       destination = prev_node_name
     end
+    route.shift #refactor this, but would like the first element in the array to be the next move
     route
   end
 

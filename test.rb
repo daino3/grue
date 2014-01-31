@@ -11,10 +11,6 @@ magenta = Room.new("Magenta", {north: nil, east: nil, south: nil, west: nil})
 rainbow = Room.new("Rainbow", {north: nil})
 
 test_rooms = [orange, blue, cobalt, yellow, green, magenta, purple]
-
 test = Map.new(*test_rooms)
 
 test.shortest_path(orange, purple)
-
-# print routes, "\n" 
-# test.find_room_by_name("Green")
