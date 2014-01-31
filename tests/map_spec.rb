@@ -12,4 +12,20 @@ describe Map do
     expect(test_map.rooms.first.name).to eq("Vermillion")
   end
 
+  describe '#shortest_path' do
+    it 'returns an array' do
+      expect(test_map.shortest_path(verm, red)).to be_an(Array)
+    end
+
+    it 'returns the room to reach the destination the quickest' do
+      expect(test_map.shortest_path(verm, red)[0]).to eq("Ochre")
+    end
+  end
+
+  describe '#find_room_by_name' do
+    it 'returns the room object from the map' do
+      expect(test_map.find_room_by_name("Red").name).to eq("Red")
+    end
+  end
+
 end

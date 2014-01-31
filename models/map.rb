@@ -8,7 +8,7 @@ class Map
   end
 
   def shortest_path(source, destination)
-    new_path = ShortestPath.new(self, source, destination)
+    new_path  = ShortestPath.new(self, source, destination)
     next_room = new_path.find_path
   end
 

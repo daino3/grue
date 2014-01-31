@@ -2,22 +2,18 @@ class ShortestPath
   attr_reader :map, :priority_queue, :final_dist 
 
   def initialize(map, source, destination)
-    @map = map
+    @map    = map
     @source = source
-    @destination = destination
-    @priority_queue = build_queue
+    @destination    = destination
+    @priority_queue = build_queue # set up data structure to find shortest path to all nodes (optimal substructure)
     @final_dist = {}
   end
 
   def find_path
-    # set up data structure to find shortest path to all nodes (optimal substructure)
     set_initial_values
-    
+
     until @priority_queue.empty?
-      # extract rooms with min distances
-      min_dist = find_current_minimums
-      # iterate through queue and set values for distances
-      set_values(min_dist)
+      set_values(find_current_minimums)
     end
     get_route
   end
@@ -27,7 +23,6 @@ class ShortestPath
   def set_values(minimum)
     @priority_queue.each do |room_name, dist_data|
       if @priority_queue.count == 1
-        # break out of the loop if there's only one room left (return breaks us out of the loop)
         @final_dist[room_name] = @priority_queue.delete(room_name)
         return @final_dist
       elsif dist_data[:distance] == minimum

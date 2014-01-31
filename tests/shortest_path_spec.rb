@@ -54,12 +54,32 @@ describe ShortestPath do
 
   describe '#set_values' do
     it 'breaks out of the loop if the priority_queue has one element' do
-      # alt_test = Map.new(*[verm])
-      # expect(alt_test.send(:set_values, 1)).to be_true
+      alt_red   = Room.new("Red", {north: nil, east: nil, south: nil, west: nil})
+      alt_map   = Map.new(*[alt_red])
+      alt_short = ShortestPath.new(alt_map, alt_red, alt_red)
+      alt_short.send(:set_initial_values)
+      prior_queue = alt_short.priority_queue.dup
+      alt_short.send(:set_values, 0)
+      expect(alt_short.final_dist == prior_queue).to be_true
+      expect(alt_short.priority_queue.empty?).to be_true
+    end
+
+    it 'sets the values of priority_queue elements with minimum distances' do
+      shortest.send(:set_initial_values)
+      q = shortest.priority_queue
+      test_dist = 5
+      q.each do |name, dist_data|
+        dist_data[:distance] = test_dist if dist_data[:distance] == nil 
+      end
+      shortest.send(:set_values, 0)
+      adj_rooms = shortest.map.find_room_by_name(verm.name).outbound_doors
+      adj_rooms.each do |r_name|
+        expect(q[r_name][:distance]).to eq(1)
+      end 
     end
   end
 
-  describe '#shortest_path' do
+  describe '#find_path' do
     it 'returns an array' do
       verm = shortest.map.rooms.first
       expect(shortest.find_path).to be_an(Array)
