@@ -6,17 +6,19 @@ require_relative 'player'
 require_relative 'shortest_path'
 
 class Game
-  attr_reader :map, :player, :grue, :dead, :winner, :resting, :moves, :current_room
+  attr_accessor :player_room, :grue_room
+  attr_reader :map, :player, :grue, :dead, :winner, :resting, :moves 
 
   def initialize(map)
     @map     = map
-    @player  = Player.new(@map.rooms.sample.name)
-    @grue    = Grue.new(get_furthest_room(@player.position))
+    @player  = Player.new
+    @grue    = Grue.new
     @dead    = false
     @winner  = false
     @resting = false
     @moves   = 5
-    @current_room = find_room(@player.position)
+    @player_room = @map.rooms.sample
+    @grue_room = get_furthest_room(@player_room)
   end
 
   def play
@@ -41,12 +43,12 @@ class Game
   end
 
   def check_for_gems
-    if !@current_room.gems.empty?
-      @current_room.gems.each do |jewel|
+    if !@player_room.gems.empty?
+      @player_room.gems.each do |jewel|
         @player.gems << jewel
         puts jewel.define_gem
       end
-      @current_room.gems = []
+      @player_room.gems = []
     end
   end
 
@@ -60,7 +62,7 @@ class Game
   end
 
   def check_for_dias
-    if @current_room.dias
+    if @player_room.dias
       if @player.gems.count == 5
         puts "You approach the dias and place your gems in the slots. You are transported back home"
         puts "Your total score is #{@player.gem_worth}"
@@ -71,28 +73,26 @@ class Game
   end
 
   def check_for_grue
-    binding.pry
-    grues_adj_rooms = find_room(@grue.position).outbound_doors
-    if @grue.position == @current_room.name
-      @current_room.gems << @grue.gems.pop
+    grues_adj_rooms = @grue_room.outbound_doors
+    if @grue_room.name == @player_room.name
+      @player_room.gems << @grue.gems.pop
       puts "You come upon the Grue! Terrified, the Grue drops a gem and takes off"
-      @grue.position = grues_adj_rooms[rand(0..(grues_adj_rooms.count-1))] 
-    elsif grues_adj_rooms.include?(@current_room.name)
+      @grue_room = find_room(grues_adj_rooms[rand(0..(grues_adj_rooms.count-1))]) 
+    elsif grues_adj_rooms.include?(@player_room.name)
       puts "The Grue is nearby. You can smell him" 
     end
   end
 
   def move_player(direction)
-    room = @player.position
-    @player.position = find_room(room).doors[direction.to_sym]
-    @current_room = find_room(@player.position)
+    next_room_name = @player_room.doors[direction.to_sym]
+    @player_room = find_room(next_room_name)
     @moves -= 1
   end
 
   def move_grue
-    @grue.position = get_shortest_path.first
+    @grue_room = find_room(get_shortest_path.first)
 
-    if @grue.position == @current_room.name
+    if @grue_room.name == @player_room.name
       puts "The Grue catches you while you sleep. You are dead"
       dead = true
     end
@@ -103,7 +103,7 @@ class Game
   end
 
   def display_position_message(options)
-    puts "You are in the #{@player.position} room. Where do you want to go next? (#{options})"
+    puts "You are in the #{@player_room.name} room. Where do you want to go next? (#{options})"
   end
 
   def check_input(input, travel_options)
@@ -114,11 +114,11 @@ class Game
   end
 
   def valid_input(input)
-    find_room(@player.position).doors[input.to_sym] != nil    
+    @player_room.doors[input.to_sym] != nil    
   end
 
   def gather_travel_options
-    travel_options = @current_room.doors
+    travel_options = @player_room.doors
     options = travel_options.map do |direction, next_room|
       direction if next_room
     end.compact.map(&:to_s)
@@ -128,15 +128,13 @@ class Game
   private
 
   def get_furthest_room(room)
-    room = find_room(room)
     path = ShortestPath.new(@map, room)
-    path.get_longest_route
+    room_name = path.get_longest_route
+    find_room(room_name)
   end
 
   def get_shortest_path
-    player_room = find_room(@player.position)
-    grue_room   = find_room(@grue.position)
-    path = ShortestPath.new(@map, grue_room, player_room)
+    path = ShortestPath.new(@map, @grue_room, @player_room)
     path.find_path
   end
 

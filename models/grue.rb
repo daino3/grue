@@ -2,10 +2,9 @@ require 'pry'
 require_relative 'jewel'
 
 class Grue
-  attr_accessor :position, :gems
+  attr_accessor :gems
 
-  def initialize(position, gem_count = nil)
-    @position = position
+  def initialize(gem_count = nil)
     @gem_count = gem_count || 5
     @gems = get_gems
   end

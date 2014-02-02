@@ -1,8 +1,7 @@
 class Player
-  attr_accessor :position, :gems
+  attr_accessor :gems
 
-  def initialize(position)
-    @position = position
+  def initialize
     @gems  = []
   end
 

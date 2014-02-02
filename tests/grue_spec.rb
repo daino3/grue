@@ -2,10 +2,9 @@ require 'rspec'
 require_relative '../models/grue'
 
 describe Grue do
-  let(:grue) { Grue.new("some room", 8)}
+  let(:grue) { Grue.new(8)}
 
-  it 'is initialized with a position (key for map) and number of gems' do
-    expect(grue.position).to eq("some room")
+  it 'is initialized with a number of gems' do
     expect(grue.gems.count).to eq(8)
   end
 
