@@ -2,7 +2,7 @@ require 'pry'
 require_relative 'jewel'
 
 class Grue
-  attr_reader :position, :gems
+  attr_accessor :position, :gems
 
   def initialize(position, gem_count = nil)
     @position = position
@@ -18,7 +18,7 @@ class Grue
     gems
   end
 
-  def total_grue_worth
+  def gem_worth
     @gems.map(&:worth).inject(:+)
   end
 

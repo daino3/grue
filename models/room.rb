@@ -1,12 +1,14 @@
 require 'pry'
 
 class Room
-  attr_reader :name, :doors, :contents
+  attr_accessor :gems
+  attr_reader :name, :doors, :dias
 
-  def initialize(name, doors)
+  def initialize(name, doors, dias=nil)
     @name = name
     @doors = doors
-    @contents = []
+    @gems = []
+    @dias = dias
   end
 
   def outbound_doors

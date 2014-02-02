@@ -11,7 +11,7 @@ describe Grue do
 
   describe '#total_grue_worth' do
     it 'calculates how much the grue\'s gems are worth' do
-      expect(grue.total_grue_worth).to eq(grue.gems.map(&:worth).inject(:+))
+      expect(grue.gem_worth).to eq(grue.gems.map(&:worth).inject(:+))
     end
   end
 

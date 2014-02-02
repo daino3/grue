@@ -1,9 +1,13 @@
 class Player
-  attr_reader :position, :gem_bag
+  attr_accessor :position, :gems
 
   def initialize(position)
     @position = position
-    @gem_bag  = []
+    @gems  = []
+  end
+
+  def gem_worth
+    @gems.map(&:worth).inject(:+)
   end
 
 end

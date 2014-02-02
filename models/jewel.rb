@@ -23,7 +23,7 @@ class Jewel
   end
 
   def define_gem
-    "You picked up a #{@name}. It's worth #{self.worth}!"
+    "You picked up a #{@name}. It's worth #{self.worth} tokens!"
   end
 
 end
