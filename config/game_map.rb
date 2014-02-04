@@ -9,7 +9,7 @@ lavender     = Room.new("Lavender",{north: nil, east: "Chartreuse", south: nil, 
 emerald      = Room.new("Emerald", {north: nil, east: "Lavender", south: "Aquamarine", west: "Cobalt"})
 cobalt       = Room.new("Cobalt", {north: "Vermillion", east: nil, south: "Burnt Sienna", west: nil})
 violet       = Room.new("Violet", {north: nil, east: "Burnt Sienna", south: nil, west: "Chartreuse"})
-burnt_sienna = Room.new("Burnt Sienna", {north: "Emerald", east: "Lavender", south: nil, west: nil})
+burnt_sienna = Room.new("Burnt Sienna", {north: "Emerald", east: "Lavender", south: nil, west: nil}, true)
 
 
 TEST_ROOM = chartreuse

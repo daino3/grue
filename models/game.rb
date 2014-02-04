@@ -6,10 +6,10 @@ require_relative 'player'
 require_relative 'shortest_path'
 
 class Game
-  attr_accessor :player_room, :grue_room
-  attr_reader :map, :player, :grue, :dead, :winner, :resting, :moves 
+  attr_accessor :player_room, :grue_room, :moves, :resting
+  attr_reader :map, :player, :grue, :dead, :winner 
 
-  def initialize(map)
+  def initialize(map, difficulty = nil)
     @map     = map
     @player  = Player.new
     @grue    = Grue.new
@@ -22,24 +22,27 @@ class Game
   end
 
   def play
+    determine_difficulty
     until @dead || @winner
       if !@resting
+        display_game_status
         travel_options = gather_travel_options
         display_position_message(travel_options)
-        input = gets.chomp.downcase
-        check_input(input, travel_options)
-        move_player(input)
+        puts '--------------------'
+        prompt; input = gets.chomp.downcase
+        clean_input = check_input(input, travel_options)
+        move_player(clean_input)
         check_for_grue
         check_for_gems
         check_for_dias
-        need_rest?
+        need_rest? if !@winner
       else
         move_grue
         @resting = false
         @moves = 5
-      # binding.pry
       end
     end
+    play_again?
   end
 
   def check_for_gems
@@ -63,8 +66,9 @@ class Game
 
   def check_for_dias
     if @player_room.dias
-      if @player.gems.count == 5
-        puts "You approach the dias and place your gems in the slots. You are transported back home"
+      if @player.gems.count >= 5
+        @winner = true
+        puts "You approach the dias and place your gems in the slots. You are transported back home! You've WON!!"
         puts "Your total score is #{@player.gem_worth}"
       else
         puts "You see a glowing dias in the middle of the room which requires 5 gems to activate"
@@ -94,12 +98,70 @@ class Game
 
     if @grue_room.name == @player_room.name
       puts "The Grue catches you while you sleep. You are dead"
-      dead = true
+      @dead = true
     end
   end
 
-  def respawn
-    Game.new(@map)
+  def gather_travel_options
+    options = @player_room.doors.map do |direction, next_room|
+      direction if next_room
+    end.compact.map(&:to_s)
+    
+    options.to_s.gsub(/[(\[)(\])]/, '')
+  end
+
+  private
+
+  def display_game_status
+    num_gems = @player.gems.count
+    score = @player.gem_worth || 0
+    if num_gems < 5
+      puts "You have #{num_gems} gems worth #{score} tokens. You need #{5-num_gems} more to win."
+    elsif num_gems >= 5
+      puts "You have #{num_gems} gems worth #{score} tokens. You should head to the room with glowing dias to win."
+    end
+  end
+
+  def determine_difficulty
+    puts 'what is your difficult? (easy, medium, hard)'
+    prompt; input = gets.chomp.downcase
+    
+    until ['easy', 'medium', 'hard'].include?(input)
+      puts "Sorry, what? (easy, medium, hard)"
+      prompt; input = gets.chomp.downcase
+    end
+
+    if input == 'easy'
+      seed_map_with_gems(5)
+    elsif input == 'medium'
+      seed_map_with_gems(3)
+    elsif input == 'hard'
+      seed_map_with_gems(1)      
+    end
+  end
+
+  def play_again?
+    puts 'Would you like to play Again? (YES / NO)'
+    prompt; input = gets.chomp.downcase
+    
+    until input == "yes" || input == "no"
+      puts "Sorry, is that a 'YES' or a 'NO'?"
+      input = gets.chomp.downcase
+    end
+
+    if input == 'yes'
+      new_game = Game.new(@map)
+      new_game.play
+    elsif input == 'no'
+      puts 'Goodbye!'
+      return
+    end
+  end
+
+  def seed_map_with_gems(num_gems)
+    num_gems.times do
+      @map.rooms.sample.gems << Jewel.new 
+    end
   end
 
   def display_position_message(options)
@@ -109,23 +171,14 @@ class Game
   def check_input(input, travel_options)
     until valid_input(input)
       puts "That isn't a valid direction. Please enter one of the options #{travel_options}"
-      input = gets.chomp.downcase
+      prompt; input = gets.chomp.downcase
     end
+    return input
   end
-
+  
   def valid_input(input)
     @player_room.doors[input.to_sym] != nil    
   end
-
-  def gather_travel_options
-    travel_options = @player_room.doors
-    options = travel_options.map do |direction, next_room|
-      direction if next_room
-    end.compact.map(&:to_s)
-    options.to_s.gsub(/[(\[)(\])]/, '')
-  end
-
-  private
 
   def get_furthest_room(room)
     path = ShortestPath.new(@map, room)
@@ -140,6 +193,10 @@ class Game
 
   def find_room(room_name)
     @map.find_room_by_name(room_name)
+  end
+
+  def prompt
+    print '>> '
   end
 
 end

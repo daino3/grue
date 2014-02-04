@@ -1,8 +1,6 @@
-require 'pry'
-
 class Room
-  attr_accessor :gems
-  attr_reader :name, :doors, :dias
+  attr_accessor :gems, :dias
+  attr_reader :name, :doors
 
   def initialize(name, doors, dias=nil)
     @name = name

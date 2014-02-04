@@ -1,3 +1,17 @@
+### Implementation Notes
+
+I've built the game so almost all the game logic exists in models/game.rb. The game is initialized with a map, which is a collection of room objects located at config/game_map.rb. A room is initialized with a name, outbound doors (hash) and an optional value to tell if the room contains a dias (true / false). A game initializes instances of a grue and a player. One unique thing in the game is that Jewels are randomly assigned to a grue with different attributes and point totals so that a player can have better / worse scores for the game. I've also included a difficulty method which seeds the map with a number of jewels depending on easy, medium, hard.
+
+To Run Tests
+'''
+rspec tests/
+'''
+To Run Application
+'''
+ruby play.rb
+'''
+
+### Project Details
 
 Map:
 --------------

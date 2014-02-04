@@ -1,7 +1,8 @@
 require_relative 'map'
 
 class ShortestPath
-  attr_reader :map, :priority_queue, :final_dist 
+  attr_accessor :priority_queue
+  attr_reader :map,  :final_dist 
 
   def initialize(map, source, destination = nil)
     @map    = map
@@ -43,7 +44,7 @@ class ShortestPath
     prev_node_name = ""
 
     # trace back through @final_dist hash
-    until route.first == @source.name
+    until final == @source.name
       @final_dist.each do |room_name, dist_data|
         if room_name == final
           prev_node_name = dist_data[:prev_node]

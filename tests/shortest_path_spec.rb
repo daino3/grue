@@ -16,7 +16,6 @@ describe ShortestPath do
   end
 
   describe '#set_initial_values' do
-
     it 'sets the source of the shortest_path method to distance to 0 and prev_node to nil' do
       shortest.send(:set_initial_values)
       q = shortest.priority_queue
@@ -97,6 +96,31 @@ describe ShortestPath do
 
     it 'the first element in the array should be the room the source should move to next' do
       expect(shortest.find_path[0]).should eq("Ochre")
+    end
+  end
+
+  describe '#get_longest_route' do
+    it 'returns the room with the longest path' do
+      dist_data = shortest.find_all_distances
+      max_dist = dist_data.map do |room, dist_data|
+        dist_data[:distance]
+      end.max
+      shortest.priority_queue = shortest.send(:build_queue)
+      next_room = shortest.get_longest_route
+      expect(dist_data[next_room][:distance]).to eq(max_dist)
+    end
+  end
+
+  describe '#get_quickest_route' do
+    it 'returns the room with the shortest path' do
+      dist_data = shortest.find_all_distances
+      min_dist = dist_data.map do |room, dist_data|
+        dist_data[:distance] if dist_data[:distance] != 0
+      end.compact.min
+      shortest.priority_queue = shortest.send(:build_queue)
+      shortest.find_all_distances
+      next_room = shortest.send(:get_quickest_route)
+      expect(dist_data[next_room[0]][:distance]).to eq(min_dist)
     end
   end
 
