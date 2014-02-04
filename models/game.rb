@@ -34,7 +34,7 @@ class Game
         move_player(clean_input)
         check_for_grue
         check_for_gems
-        check_for_dias
+        check_for_dais
         need_rest? if !@winner
       else
         move_grue
@@ -44,6 +44,8 @@ class Game
     end
     play_again?
   end
+
+  private
 
   def check_for_gems
     if !@player_room.gems.empty?
@@ -64,14 +66,14 @@ class Game
     end
   end
 
-  def check_for_dias
-    if @player_room.dias
+  def check_for_dais
+    if @player_room.dais
       if @player.gems.count >= 5
         @winner = true
-        puts "You approach the dias and place your gems in the slots. You are transported back home! You've WON!!"
+        puts "You approach the dais and place your gems in the slots. You are transported back home! You've WON!!"
         puts "Your total score is #{@player.gem_worth}"
       else
-        puts "You see a glowing dias in the middle of the room which requires 5 gems to activate"
+        puts "You see a glowing dais in the middle of the room which requires 5 gems to activate"
       end
     end
   end
@@ -110,15 +112,13 @@ class Game
     options.to_s.gsub(/[(\[)(\])]/, '')
   end
 
-  private
-
   def display_game_status
     num_gems = @player.gems.count
     score = @player.gem_worth || 0
     if num_gems < 5
       puts "You have #{num_gems} gems worth #{score} tokens. You need #{5-num_gems} more to win."
     elsif num_gems >= 5
-      puts "You have #{num_gems} gems worth #{score} tokens. You should head to the room with glowing dias to win."
+      puts "You have #{num_gems} gems worth #{score} tokens. You should head to the room with glowing dais to win."
     end
   end
 

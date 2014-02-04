@@ -1,12 +1,26 @@
+Sleepy Giant Code Challenge
+----------------------
+
 ### Implementation Notes
 
-I've built the game so almost all the game logic exists in models/game.rb. The game is initialized with a map, which is a collection of room objects located at config/game_map.rb. A room is initialized with a name, outbound doors (hash) and an optional value to tell if the room contains a dias (true / false). A game initializes instances of a grue and a player. One unique thing in the game is that Jewels are randomly assigned to a grue with different attributes and point totals so that a player can have better / worse scores for the game. I've also included a difficulty method which seeds the map with a number of jewels depending on easy, medium, hard.
+Author: Dain Hall
 
-To Run Tests
+This is a command line game. I've built the game so almost all the game logic exists in models/game.rb. The game is initialized with a map, which is a collection of room objects located at config/game_map.rb. A room is initialized with a name, outbound doors (hash) and an optional value to tell if the room contains a dais (true / false). A game initializes instances of a grue and a player. One unique thing in the game is that Jewels are randomly assigned to a grue with different attributes and point totals so that a player can have better / worse scores for the game. I've also included a difficulty method which seeds the map with a number of jewels depending on easy, medium, hard.
+
+I tested private methods significantly because they were the meat and potatoes of the game and shortest path logic. I know you should probably test only public methods, but I wanted to isolate each 'unit' of logic indepedently.
+
+### Assumptions:
+
+Must give a 'circular' map - you must be able to get to any room (node) in the map via the outbound doors available. Room names must be unique. Room 'weights' are 1.
+
+### To Run: 
+
+Test Suite
 '''
 rspec tests/
 '''
-To Run Application
+
+Application
 '''
 ruby play.rb
 '''
@@ -41,10 +55,6 @@ rooms: north -> nil, east -> Burnt Sienna, south -> Chartreuse, west -> nil
 
 ### Burnt Sienna Room
 rooms: north -> Emerald, east -> Lavender, south -> nil, west -> nil
-
-Assumptions:
--------------------
-Must give a 'circular' map - you must be able to get to any room (node) in the map via the outbound doors available. Room names must be unique. Room 'weights' are 1.
 
 Directions:
 -------------------

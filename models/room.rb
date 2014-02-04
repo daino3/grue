@@ -1,12 +1,12 @@
 class Room
-  attr_accessor :gems, :dias
+  attr_accessor :gems, :dais
   attr_reader :name, :doors
 
-  def initialize(name, doors, dias=nil)
+  def initialize(name, doors, dais=nil)
     @name = name
     @doors = doors
     @gems = []
-    @dias = dias
+    @dais = dais
   end
 
   def outbound_doors
