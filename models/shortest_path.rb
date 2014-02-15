@@ -1,19 +1,19 @@
 require_relative 'map'
 
 class ShortestPath
-  attr_accessor :priority_queue
+  attr_accessor :queue
   attr_reader :map,  :final_dist 
 
   def initialize(map, source, destination = nil)
     @map    = map
     @source = source
     @destination    = destination
-    @priority_queue = build_queue # set up data structure to find shortest path to all nodes (optimal substructure)
+    @queue = build_queue # set up data structure to find shortest path to all nodes (optimal substructure)
     @final_dist = {}
   end
 
   def find_path
-    raise ArgumentError, "Destination does not exist in current map" if !@priority_queue.has_key?(@destination.name)
+    raise ArgumentError, "Destination does not exist in current map" if !@queue.has_key?(@destination.name)
     find_all_distances
     get_quickest_route
   end
@@ -28,9 +28,7 @@ class ShortestPath
   end
 
   def find_all_distances
-    set_initial_values
-
-    until @priority_queue.empty?
+    until @queue.empty?
       set_values(find_current_minimums)
     end
     @final_dist
@@ -58,14 +56,14 @@ class ShortestPath
   end
 
   def set_values(minimum)
-    @priority_queue.each do |room_name, dist_data|
-      if @priority_queue.count == 1
-        @final_dist[room_name] = @priority_queue.delete(room_name)
+    @queue.each do |room_name, dist_data|
+      if @queue.count == 1
+        @final_dist[room_name] = @queue.delete(room_name)
         return @final_dist
       elsif dist_data[:distance] == minimum
         set_adjacents(room_name)
         # delete the room from the priority queue and add it to the final_distance hash
-        @final_dist[room_name] = @priority_queue.delete(room_name)
+        @final_dist[room_name] = @queue.delete(room_name)
       end
     end
   end
@@ -78,35 +76,28 @@ class ShortestPath
   end
 
   def set_adj_room_values(room_name, adj_room_name)
-    return if !@priority_queue.keys.include?(adj_room_name)
+    return if !@queue.keys.include?(adj_room_name)
 
-    room_dist = @priority_queue[room_name][:distance]
-    adj_dist  = @priority_queue[adj_room_name][:distance]
+    room_dist = @queue[room_name][:distance]
+    adj_dist  = @queue[adj_room_name][:distance]
     if adj_dist.nil? || adj_dist > room_dist + 1
-      @priority_queue[adj_room_name][:distance]  = room_dist + 1
-      @priority_queue[adj_room_name][:prev_node] = room_name
+      @queue[adj_room_name][:distance]  = room_dist + 1
+      @queue[adj_room_name][:prev_node] = room_name
     end
   end
 
   def build_queue
-    distance_data = {}
-    # set up data structure to house all nodes of the map for shortest_path method 
-    @map.rooms.each do |room|
-      distance_data[room.name] = {distance: nil, prev_node: nil}
-    end
-    distance_data
+    Hash[@map.rooms.map do |room| 
+      [room.name, {distance: initial_dist(room), prev_node: nil}] 
+    end]
   end
 
-  def set_initial_values
-    @priority_queue.each do |room_name, dist_data|
-      dist_data[:distance]  = nil
-      dist_data[:prev_node] = nil
-    end
-    @priority_queue[@source.name][:distance] = 0
+  def initial_dist(room)
+    @source.name == room.name ? 0 : nil
   end
 
   def find_current_minimums
-    @priority_queue.map do |room_name, dist_data| 
+    @queue.map do |room_name, dist_data| 
       dist_data[:distance]
     end.compact.min
   end
